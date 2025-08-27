@@ -1,0 +1,75 @@
+# Arquivos de bytecode compilado do Java
+*.class
+
+# Saídas de build
+/target/
+/build/
+/out/
+
+# Arquivos gerados pelo Maven
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+
+# Arquivos gerados pelo Gradle
+.gradle
+/build/
+!/src/**/build/
+
+# Arquivos de IDEs
+
+## IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+
+## Eclipse
+.classpath
+.project
+.settings/
+bin/
+
+## NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+.nb-gradle/
+
+## VS Code
+.vscode/
+
+# Arquivos de log
+*.log
+
+# Arquivos do Sistema Operacional
+.DS_Store
+Thumbs.db
+
+# Arquivos temporários e de backup
+*~
+*.swp
+
+# Arquivos JAR, WAR, e EAR (geralmente gerenciados por dependências)
+*.jar
+*.war
+*.ear
+
+# Pacotes de instalação do Java (se aplicável)
+*.zip
+*.tar.gz
+*.dmg
+
+# Cache e arquivos de configuração do usuário
+.settings
+.cproject
+.externalToolBuilders
+
+# Relatórios de teste e cobertura
+/coverage/
+/reports/
