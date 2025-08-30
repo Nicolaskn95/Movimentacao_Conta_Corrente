@@ -48,7 +48,7 @@ public class JFUsuarioConsultaGeral extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         btnPrint = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
