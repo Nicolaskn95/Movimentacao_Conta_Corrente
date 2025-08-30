@@ -6,6 +6,11 @@ package View;
 
 import net.proteanit.sql.DbUtils;
 import java.sql.ResultSet;
+import java.text.MessageFormat;
+import javax.print.PrintService;
+import javax.print.PrintServiceLookup;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import mvc_dao.ConnectDAO;
 /**
  *
@@ -26,8 +31,10 @@ public class JFClienteConsultaGeral extends javax.swing.JFrame {
         ResultSet clientesRS;
         clientesRS = objcon.consultaRegistroAgenciasRSBD("CLIENTES");
         jTable1.setModel(DbUtils.resultSetToTableModel(clientesRS));
+         RelatorioUtils.ajustarTabela(jTable1);
         jTable1.setVisible(true);
     }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -39,8 +46,9 @@ public class JFClienteConsultaGeral extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        btnPrint = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -55,25 +63,69 @@ public class JFClienteConsultaGeral extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jTable1);
 
+        btnPrint.setText("Imprimir");
+        btnPrint.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPrintActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(135, 135, 135)
+                        .addComponent(btnPrint)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addGap(44, 44, 44)
+                .addComponent(btnPrint)
+                .addContainerGap(50, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrintActionPerformed
+        
+    PrintService[] printServices = PrintServiceLookup.lookupPrintServices(null, null);
+
+    if (printServices.length > 0) {
+
+        JOptionPane.showMessageDialog(this, "Impressora encontrada! Abrindo diálogo de impressão.", "Imprimir", JOptionPane.INFORMATION_MESSAGE);
+        
+        MessageFormat header = new MessageFormat("Relatório de Agências");
+        MessageFormat footer = new MessageFormat("Página {0,number,integer}");
+
+        try {
+            boolean complete = jTable1.print(JTable.PrintMode.NORMAL, header, footer);
+            if (complete) {
+                JOptionPane.showMessageDialog(this, "Impressão enviada com sucesso.", "Concluído", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "A impressão foi cancelada.", "Cancelado", JOptionPane.WARNING_MESSAGE);
+            }
+        } catch (java.awt.print.PrinterException ex) {
+            System.err.println("Erro de impressão: " + ex.getMessage());
+            JOptionPane.showMessageDialog(this, "Ocorreu um erro ao tentar imprimir.", "Erro de Impressão", JOptionPane.ERROR_MESSAGE);
+        }
+    } else {
+
+        JOptionPane.showMessageDialog(this, "Nenhuma impressora foi encontrada.\nO relatório será gerado como um arquivo PDF.", "Gerar PDF", JOptionPane.INFORMATION_MESSAGE);
+        
+        RelatorioUtils.gerarRelatorioPDF(rootPane, jTable1, "Relatório de Clientes"); 
+    }
+    }//GEN-LAST:event_btnPrintActionPerformed
 
     /**
      * @param args the command line arguments
@@ -111,6 +163,7 @@ public class JFClienteConsultaGeral extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnPrint;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
